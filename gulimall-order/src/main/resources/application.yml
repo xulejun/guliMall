@@ -1,11 +1,11 @@
 server:
-  port: 7000
+  port: 9000
 # 数据源
 spring:
   datasource:
     username: root
     password: 123456
-    url: jdbc:mysql://192.168.43.66:3306/gulimall_sms
+    url: jdbc:mysql://192.168.43.66:3306/gulimall_oms
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 # MapperScan
