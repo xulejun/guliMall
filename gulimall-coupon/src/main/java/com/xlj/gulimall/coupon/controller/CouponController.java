@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +18,6 @@ import com.xlj.common.utils.PageUtils;
 import com.xlj.common.utils.R;
 
 
-
 /**
  * 优惠券信息
  *
@@ -24,6 +25,7 @@ import com.xlj.common.utils.R;
  * @email xule_jun@163.com
  * @date 2021-01-09 16:46:18
  */
+@RefreshScope
 @RestController
 @RequestMapping("coupon/coupon")
 public class CouponController {
@@ -31,23 +33,38 @@ public class CouponController {
     private CouponService couponService;
 
     /**
+     * 从application.properties中获取
+     * 不要写user.name，他是环境里的变量
+     */
+    @Value("${coupon.user.name}")
+    private String name;
+    @Value("${coupon.user.age}")
+    private Integer age;
+
+    @RequestMapping("/testConfig")
+    public R testConfig() {
+        return R.ok().put("name", name).put("age", age);
+    }
+
+    /**
      * 新增open-feign远程过程调用测试
+     *
      * @return
      */
     @RequestMapping("/member/list")
-    public R membercoupons(){    //全系统的所有返回都返回R
+    public R membercoupons() {    //全系统的所有返回都返回R
         // 应该去数据库查用户对于的优惠券，但这个我们简化了，不去数据库查了，构造了一个优惠券给他返回
         CouponEntity couponEntity = new CouponEntity();
         //优惠券的名字
         couponEntity.setCouponName("满100-10");
-        return R.ok().put("coupons",Arrays.asList(couponEntity));
+        return R.ok().put("coupons", Arrays.asList(couponEntity));
     }
 
     /**
      * 列表
      */
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
+    public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = couponService.queryPage(params);
 
         return R.ok().put("page", page);
@@ -58,8 +75,8 @@ public class CouponController {
      * 信息
      */
     @RequestMapping("/info/{id}")
-    public R info(@PathVariable("id") Long id){
-		CouponEntity coupon = couponService.getById(id);
+    public R info(@PathVariable("id") Long id) {
+        CouponEntity coupon = couponService.getById(id);
 
         return R.ok().put("coupon", coupon);
     }
@@ -68,8 +85,8 @@ public class CouponController {
      * 保存
      */
     @RequestMapping("/save")
-    public R save(@RequestBody CouponEntity coupon){
-		couponService.save(coupon);
+    public R save(@RequestBody CouponEntity coupon) {
+        couponService.save(coupon);
 
         return R.ok();
     }
@@ -78,8 +95,8 @@ public class CouponController {
      * 修改
      */
     @RequestMapping("/update")
-    public R update(@RequestBody CouponEntity coupon){
-		couponService.updateById(coupon);
+    public R update(@RequestBody CouponEntity coupon) {
+        couponService.updateById(coupon);
 
         return R.ok();
     }
@@ -88,8 +105,8 @@ public class CouponController {
      * 删除
      */
     @RequestMapping("/delete")
-    public R delete(@RequestBody Long[] ids){
-		couponService.removeByIds(Arrays.asList(ids));
+    public R delete(@RequestBody Long[] ids) {
+        couponService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
     }
