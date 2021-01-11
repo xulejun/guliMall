@@ -17,6 +17,12 @@
     </properties>
 
     <dependencies>
+        <!--        openfeign-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
         <!--        公共依赖-->
         <dependency>
             <groupId>com.xlj.gulimall</groupId>
